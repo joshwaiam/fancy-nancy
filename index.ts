@@ -38,6 +38,8 @@ bot.on("start", async () => {
     process.env.SLACK_CHANNEL,
     `PrinterBot is now online.\n\nCurrent error status:\n *${errorText}*`
   );
+});
 
+bot.on("close", () => {
   browser.close();
 });
