@@ -30,10 +30,6 @@ module.exports = {
     "@typescript-eslint/no-useless-constructor": "error",
     "import/no-unresolved": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "import/no-extraneous-dependencies": [
-      2,
-      { devDependencies: ["**/test.tsx", "**/test.ts"] }
-    ],
     "prettier/prettier": "error",
     "no-underscore-dangle": ["error", { "allow": ["_id"]}]
   }
