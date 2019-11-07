@@ -16,7 +16,13 @@ This code has some specific implementation related to our specific printer, the 
 2. Run `npm install` to add the necessary packages.
 3. Create a `.env` file in the root, pasting the contents of `.env.txt` to use as the template.
 4. Complete the `.env` file with your specific Slack token, Slack channel name, and printer dashboard URL.
-5. Run `npm run dev` to start the bot in a development environment.
+5. Run `npm run dev` to start the bot in a development environment, or `npm run build` then `npm start` to run it in production.
+
+### Install as a Windows service
+
+1. Follow the above steps in Getting Started.
+2. Run `npm run build`.
+3. Run `npm run install-windows-service`. This requires adminstrator access to terminal.
 
 ## Credits
 
