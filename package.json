@@ -1,0 +1,19 @@
+{
+  "name": "printer-bot",
+  "version": "1.0.0",
+  "description": "Monitors office printers' status and reports it via Slack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshwaiam/printer-bot.git"
+  },
+  "author": "Josh Payette",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joshwaiam/printer-bot/issues"
+  },
+  "homepage": "https://github.com/joshwaiam/printer-bot#readme"
+}
