@@ -7,15 +7,13 @@ dotenv.config();
 
 const bot = new SlackBot({
   token: process.env.SLACK_TOKEN,
-  name: 'printerbot'
+  name: process.env.SLACK_BOT_NAME
 });
 
 let browser: puppeteer.Browser;
 let page: puppeteer.Page;
 
 bot.on("start", async () => {
-
-
   try {
     browser = await puppeteer.launch();
     page = await browser.newPage();
