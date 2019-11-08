@@ -42,9 +42,7 @@ bot.on("close", () => {
 const checkPrinterErrors = async (): Promise<void> => {
   logger.info("Checking for errors.");
 
-  let errors: string[] = [];
   let page: puppeteer.Page;
-
   /** Fetch the dashboard HTML */
   try {
     page = await browser.newPage();
@@ -56,31 +54,14 @@ const checkPrinterErrors = async (): Promise<void> => {
   }
 
   /** Parse the error DOM nodes */
+  let errors: string[] = [];
   try {
     errors = await page.evaluate(() => {
-      const els = document
-        .getElementById("deviceErrorInfoModule")
-        .getElementsByTagName("p");
-      if (!els || els.length === 0) {
-        return ["Error checking device status."];
-      }
-
-      if (!els[0].textContent) {
-        logger.error("Could not read text content of first element.");
-        return ["Error checking device status."];
-      }
-
-      if (els.length === 1) {
-        return ["No error."];
-      }
-
+      const nodes = document.getElementsByClassName("ErrorInfoMessage");
       const errorMessages: string[] = [];
-      for (let i = 0; i < els.length; i++) {
-        const el = els[i].getElementsByClassName("ErrorInfoMessage");
 
-        if (el) {
-          errorMessages.push(el[0].textContent);
-        }
+      for (const node of nodes) {
+        errorMessages.push(node.textContent);
       }
 
       return errorMessages;
@@ -91,14 +72,13 @@ const checkPrinterErrors = async (): Promise<void> => {
 
   /** Format the message to send back */
   let message: string;
-  if (!errors) {
-    message = "Error parsing printer status.  @Josh Payette - fix me!";
-  } else if (errors.length === 1 && errors[0] === "No error.") {
+  if (errors.length === 0) {
     message = ":success: Fancy Nancy is error free!";
   } else {
-    message = `@here :warning: Fancy Nancy has the following errors:\n\n ${errors.map(
-      e => `*${e}*\n`
-    )}`;
+    message = ":warning: Fancy Nancy has the following errors:\n";
+    errors.map(e => {
+      message += `*${e}*\n`;
+    });
   }
 
   /** Exit if the error message is the same as the last check */
