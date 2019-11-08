@@ -10,7 +10,10 @@ const token = process.env.SLACK_TOKEN;
 const name = process.env.SLACK_BOT_NAME;
 const url = process.env.PRINTER_URL;
 const channel = process.env.SLACK_CHANNEL;
+const isDev = process.env.NODE_ENV !== "production";
 const interval = parseInt(process.env.CHECK_INTERVAL, 10) * 1000;
+// eslint-disable-next-line @typescript-eslint/camelcase
+const messageParams = { link_names: true };
 
 let previousMessage = "";
 let browser: puppeteer.Browser;
@@ -24,7 +27,14 @@ bot.on("start", async () => {
   try {
     browser = await puppeteer.launch();
   } catch (e) {
-    logger.error(e.message);
+    if (isDev) {
+      bot.postMessageToChannel(
+        channel,
+        "@Josh Payette FIX ME!  I had trouble starting my web browser!",
+        messageParams
+      );
+      logger.error(e.message);
+    }
     return;
   }
 
@@ -36,7 +46,9 @@ bot.on("close", () => {
 });
 
 const checkPrinterErrors = async (): Promise<void> => {
-  logger.info("Checking for errors.");
+  if (isDev) {
+    logger.info("Checking for errors.");
+  }
 
   let page: puppeteer.Page;
   /** Fetch the dashboard HTML */
@@ -45,7 +57,14 @@ const checkPrinterErrors = async (): Promise<void> => {
 
     await page.goto(url);
   } catch (e) {
-    logger.error(e.message);
+    bot.postMessageToChannel(
+      channel,
+      "@Josh Payette FIX ME!  I had trouble fetching the printer DOM.",
+      messageParams
+    );
+    if (isDev) {
+      logger.error(e.message);
+    }
     return;
   }
 
@@ -63,7 +82,15 @@ const checkPrinterErrors = async (): Promise<void> => {
       return errorMessages;
     });
   } catch (e) {
-    logger.error(e.message);
+    bot.postMessageToChannel(
+      channel,
+      "@Josh Payette FIX ME!  I had trouble parsing the DOM nodes!",
+      messageParams
+    );
+    if (isDev) {
+      logger.error(e.message);
+    }
+    return;
   }
 
   /** Format the message to send back */
@@ -71,7 +98,7 @@ const checkPrinterErrors = async (): Promise<void> => {
   if (errors.length === 0) {
     message = ":success: Fancy Nancy is error free!";
   } else {
-    message = ":warning: @channel Fancy Nancy has the following errors:\n";
+    message = ":warning: @channel\nFancy Nancy has the following errors:\n";
     errors.map(e => {
       message += `*${e}*\n`;
     });
@@ -84,6 +111,9 @@ const checkPrinterErrors = async (): Promise<void> => {
 
   previousMessage = message;
 
-  bot.postMessageToChannel(channel, message);
-  logger.info("Error check complete.");
+  bot.postMessageToChannel(channel, message, messageParams);
+
+  if (isDev) {
+    logger.info("Error check complete.");
+  }
 };
