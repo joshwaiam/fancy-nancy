@@ -71,7 +71,7 @@ const checkPrinterErrors = async (): Promise<void> => {
   if (errors.length === 0) {
     message = ":success: Fancy Nancy is error free!";
   } else {
-    message = ":warning: Fancy Nancy has the following errors:\n";
+    message = ":warning: @channel Fancy Nancy has the following errors:\n";
     errors.map(e => {
       message += `*${e}*\n`;
     });
