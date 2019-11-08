@@ -20,10 +20,6 @@ const bot = new SlackBot({
   name
 });
 
-/**
- * TODO: Ensure errors properly parsing
- */
-
 bot.on("start", async () => {
   try {
     browser = await puppeteer.launch();
@@ -83,7 +79,6 @@ const checkPrinterErrors = async (): Promise<void> => {
 
   /** Exit if the error message is the same as the last check */
   if (message === previousMessage) {
-    logger.info("Skipping message due to no change in status.");
     return;
   }
 
