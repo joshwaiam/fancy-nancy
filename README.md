@@ -1,7 +1,5 @@
 # Printer-Bot
 
-## About Printer-Bot
-
 This tool will retrieve errors from the dashboard for a Canon iR-ADV C5255 printer and write them to a Slack channel.
 
 In our office, our main printer is used to print a large quality of booklets, so errors will happen when paper runs out, toner needs to be changed, etc. Not catching these errors right away can lead to many unnecessary delays in print jobs completing. This tool notifies members of a Slack channel within 45 seconds if the printer goes into an error state.
