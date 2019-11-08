@@ -11,6 +11,7 @@ const name = process.env.SLACK_BOT_NAME;
 const url = process.env.PRINTER_URL;
 const channel = process.env.SLACK_CHANNEL;
 const isDev = process.env.NODE_ENV !== "production";
+const admin = process.env.SLACK_ADMIN;
 const interval = parseInt(process.env.CHECK_INTERVAL, 10) * 1000;
 // eslint-disable-next-line @typescript-eslint/camelcase
 const messageParams = { link_names: true };
@@ -30,7 +31,7 @@ bot.on("start", async () => {
     if (isDev) {
       bot.postMessageToChannel(
         channel,
-        "@Josh Payette FIX ME!  I had trouble starting my web browser!",
+        `${admin} FIX ME!  I had trouble starting my web browser!`,
         messageParams
       );
       logger.error(e.message);
@@ -59,7 +60,7 @@ const checkPrinterErrors = async (): Promise<void> => {
   } catch (e) {
     bot.postMessageToChannel(
       channel,
-      "@Josh Payette FIX ME!  I had trouble fetching the printer DOM.",
+      `${admin} FIX ME!  I had trouble fetching the printer DOM.`,
       messageParams
     );
     if (isDev) {
@@ -84,7 +85,7 @@ const checkPrinterErrors = async (): Promise<void> => {
   } catch (e) {
     bot.postMessageToChannel(
       channel,
-      "@Josh Payette FIX ME!  I had trouble parsing the DOM nodes!",
+      `${admin} FIX ME!  I had trouble parsing the DOM nodes!`,
       messageParams
     );
     if (isDev) {
