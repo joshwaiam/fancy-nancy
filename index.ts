@@ -52,46 +52,44 @@ const checkPrinterErrors = async (): Promise<void> => {
   }
 
   let page: puppeteer.Page;
+  let errors: string[] = [];
+
   /** Fetch the dashboard HTML */
   try {
     page = await browser.newPage();
 
     await page.goto(url);
   } catch (e) {
-    bot.postMessageToChannel(
-      channel,
-      `${admin} FIX ME!  I had trouble fetching the printer DOM.`,
-      messageParams
-    );
+    errors.push(`${admin} FIX ME!  I had trouble fetching the printer DOM.`);
     if (isDev) {
       logger.error(e.message);
     }
-    return;
   }
 
   /** Parse the error DOM nodes */
-  let errors: string[] = [];
-  try {
-    errors = await page.evaluate(() => {
-      const nodes = document.getElementsByClassName("ErrorInfoMessage");
-      const errorMessages: string[] = [];
+  if (errors.length === 0) {
+    try {
+      errors = await page.evaluate(() => {
+        const nodes = document.getElementsByClassName("ErrorInfoMessage");
+        const errorMessages: string[] = [];
 
-      for (const node of nodes) {
-        errorMessages.push(node.textContent);
+        for (const node of nodes) {
+          errorMessages.push(node.textContent);
+        }
+
+        return errorMessages;
+      });
+    } catch (e) {
+      bot.postMessageToChannel(
+        channel,
+        `${admin} FIX ME!  I had trouble parsing the DOM nodes!`,
+        messageParams
+      );
+      if (isDev) {
+        logger.error(e.message);
       }
-
-      return errorMessages;
-    });
-  } catch (e) {
-    bot.postMessageToChannel(
-      channel,
-      `${admin} FIX ME!  I had trouble parsing the DOM nodes!`,
-      messageParams
-    );
-    if (isDev) {
-      logger.error(e.message);
+      return;
     }
-    return;
   }
 
   /** Format the message to send back */
