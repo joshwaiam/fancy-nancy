@@ -92,14 +92,13 @@ const checkPrinterErrors = async (): Promise<void> => {
     });
   }
 
+  logger.info("Error check complete.");
+
   /** Exit if the error message is the same as the last check */
   if (message === previousMessage) {
     return;
   }
 
   previousMessage = message;
-
   bot.postMessageToChannel(channel, message, messageParams);
-
-  logger.info("Error check complete.");
 };
