@@ -10,7 +10,6 @@ const token = process.env.SLACK_TOKEN;
 const name = process.env.SLACK_BOT_NAME;
 const url = process.env.PRINTER_URL;
 const channel = process.env.SLACK_CHANNEL;
-const isDev = process.env.NODE_ENV !== "production";
 const admin = process.env.SLACK_ADMIN;
 const interval = parseInt(process.env.CHECK_INTERVAL, 10) * 1000;
 // eslint-disable-next-line @typescript-eslint/camelcase
@@ -28,13 +27,11 @@ bot.on("start", async () => {
   try {
     browser = await puppeteer.launch();
   } catch (e) {
-    if (isDev) {
-      bot.postMessageToUser(
-        admin,
-        `I had trouble starting my web browser!`
-      );
-      logger.error(e.message);
-    }
+    bot.postMessageToUser(
+      admin,
+      `I had trouble starting my web browser!`
+    );
+    logger.error(e.message);
     return;
   }
 
