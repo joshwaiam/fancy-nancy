@@ -60,36 +60,36 @@ const checkPrinterErrors = async (): Promise<void> => {
 
     await page.goto(url);
   } catch (e) {
-    errors.push(`${admin} FIX ME!  I had trouble fetching the printer DOM.`);
+    bot.postMessageToUser(admin, "Error fetching the DOM.");
     if (isDev) {
       logger.error(e.message);
     }
+
+    return;
   }
 
   /** Parse the error DOM nodes */
-  if (errors.length === 0) {
-    try {
-      errors = await page.evaluate(() => {
-        const nodes = document.getElementsByClassName("ErrorInfoMessage");
-        const errorMessages: string[] = [];
+  try {
+    errors = await page.evaluate(() => {
+      const nodes = document.getElementsByClassName("ErrorInfoMessage");
+      const errorMessages: string[] = [];
 
-        for (const node of nodes) {
-          errorMessages.push(node.textContent);
-        }
-
-        return errorMessages;
-      });
-    } catch (e) {
-      bot.postMessageToChannel(
-        channel,
-        `${admin} FIX ME!  I had trouble parsing the DOM nodes!`,
-        messageParams
-      );
-      if (isDev) {
-        logger.error(e.message);
+      for (const node of nodes) {
+        errorMessages.push(node.textContent);
       }
-      return;
+
+      return errorMessages;
+    });
+  } catch (e) {
+    bot.postMessageToChannel(
+      channel,
+      `${admin} FIX ME!  I had trouble parsing the DOM nodes!`,
+      messageParams
+    );
+    if (isDev) {
+      logger.error(e.message);
     }
+    return;
   }
 
   /** Format the message to send back */
