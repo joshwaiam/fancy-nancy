@@ -10,7 +10,6 @@ const token = process.env.SLACK_TOKEN;
 const name = process.env.SLACK_BOT_NAME;
 const url = process.env.PRINTER_URL;
 const channel = process.env.SLACK_CHANNEL;
-const admin = process.env.SLACK_ADMIN;
 const interval = parseInt(process.env.CHECK_INTERVAL, 10) * 1000;
 // eslint-disable-next-line @typescript-eslint/camelcase
 const messageParams = { link_names: true };
@@ -27,7 +26,6 @@ bot.on("start", async () => {
   try {
     browser = await puppeteer.launch();
   } catch (e) {
-    bot.postMessageToUser(admin, `I had trouble starting my web browser!`);
     logger.error(e.message);
     return;
   }
@@ -51,7 +49,6 @@ const checkPrinterErrors = async (): Promise<void> => {
 
     await page.goto(url);
   } catch (e) {
-    bot.postMessageToUser(admin, "Error fetching the DOM.");
     logger.error(e.message);
     return;
   }
@@ -62,18 +59,23 @@ const checkPrinterErrors = async (): Promise<void> => {
       const nodes = document.getElementsByClassName("ErrorInfoMessage");
       const errorMessages: string[] = [];
 
+      const errorsToIgnore = [
+        "The cyan toner is low.",
+        "The magenta toner is low.",
+        "The yellow toner is low.",
+        "The black toner is low."
+      ];
+
       for (const node of nodes) {
-        errorMessages.push(node.textContent);
+        const errorText = node.textContent.trim();
+        if (!errorsToIgnore.includes(errorText)) {
+          errorMessages.push(errorText);
+        }
       }
 
       return errorMessages;
     });
   } catch (e) {
-    bot.postMessageToChannel(
-      channel,
-      `${admin} FIX ME!  I had trouble parsing the DOM nodes!`,
-      messageParams
-    );
     logger.error(e.message);
     return;
   }
