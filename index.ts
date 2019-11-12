@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 import * as puppeteer from "puppeteer";
 import logger from "./logger";
 
-dotenv.config({ path: __dirname + '/.env' });
+dotenv.config({ path: __dirname + "/.env" });
 
 const token = process.env.SLACK_TOKEN;
 const name = process.env.SLACK_BOT_NAME;
@@ -27,10 +27,7 @@ bot.on("start", async () => {
   try {
     browser = await puppeteer.launch();
   } catch (e) {
-    bot.postMessageToUser(
-      admin,
-      `I had trouble starting my web browser!`
-    );
+    bot.postMessageToUser(admin, `I had trouble starting my web browser!`);
     logger.error(e.message);
     return;
   }
