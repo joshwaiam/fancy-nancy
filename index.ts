@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 import * as puppeteer from "puppeteer";
 import logger from "./logger";
 
-dotenv.config();
+dotenv.config({ path: __dirname + '/.env' });
 
 const token = process.env.SLACK_TOKEN;
 const name = process.env.SLACK_BOT_NAME;
@@ -29,10 +29,9 @@ bot.on("start", async () => {
     browser = await puppeteer.launch();
   } catch (e) {
     if (isDev) {
-      bot.postMessageToChannel(
-        channel,
-        `${admin} FIX ME!  I had trouble starting my web browser!`,
-        messageParams
+      bot.postMessageToUser(
+        admin,
+        `I had trouble starting my web browser!`
       );
       logger.error(e.message);
     }
@@ -47,9 +46,7 @@ bot.on("close", () => {
 });
 
 const checkPrinterErrors = async (): Promise<void> => {
-  if (isDev) {
-    logger.info("Checking for errors.");
-  }
+  logger.info("Checking for errors.");
 
   let page: puppeteer.Page;
   let errors: string[] = [];
@@ -61,10 +58,7 @@ const checkPrinterErrors = async (): Promise<void> => {
     await page.goto(url);
   } catch (e) {
     bot.postMessageToUser(admin, "Error fetching the DOM.");
-    if (isDev) {
-      logger.error(e.message);
-    }
-
+    logger.error(e.message);
     return;
   }
 
@@ -86,9 +80,7 @@ const checkPrinterErrors = async (): Promise<void> => {
       `${admin} FIX ME!  I had trouble parsing the DOM nodes!`,
       messageParams
     );
-    if (isDev) {
-      logger.error(e.message);
-    }
+    logger.error(e.message);
     return;
   }
 
@@ -112,7 +104,5 @@ const checkPrinterErrors = async (): Promise<void> => {
 
   bot.postMessageToChannel(channel, message, messageParams);
 
-  if (isDev) {
-    logger.info("Error check complete.");
-  }
+  logger.info("Error check complete.");
 };
