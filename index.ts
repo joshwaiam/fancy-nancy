@@ -24,7 +24,7 @@ const bot = new SlackBot({
 
 async function browserInit(): Promise<void> {
   try {
-    browser = await puppeteer.launch();
+    browser = await puppeteer.launch({ args: ["--disable-gpu"] });
   } catch (e) {
     logger.error(e.message);
   }
