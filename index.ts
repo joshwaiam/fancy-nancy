@@ -22,14 +22,18 @@ const bot = new SlackBot({
   name
 });
 
-bot.on("start", async () => {
+async function browserInit(): Promise<void> {
   try {
     browser = await puppeteer.launch();
   } catch (e) {
     logger.error(e.message);
-    return;
   }
 
+  browser.on("disconnected", browserInit);
+}
+
+bot.on("start", async () => {
+  await browserInit();
   setInterval(checkPrinterErrors, interval);
 });
 
