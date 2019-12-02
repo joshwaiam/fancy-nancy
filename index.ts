@@ -59,7 +59,7 @@ const checkPrinterErrors = async (): Promise<void> => {
   /** Parse the error DOM nodes */
   try {
     errorsToReport = await page.evaluate(() => {
-      const nodes = document.getElementsByClassName("ErrorInfoMessage");
+      const errorNodes = document.getElementsByClassName("ErrorInfoMessage");
       const parsedErrors: string[] = [];
 
       const errorsToIgnore = [
@@ -70,7 +70,7 @@ const checkPrinterErrors = async (): Promise<void> => {
         "The waste toner container is almost full."
       ];
 
-      for (const node of nodes) {
+      for (const node of errorNodes) {
         const errorText = node.textContent.trim();
         if (!errorsToIgnore.includes(errorText)) {
           parsedErrors.push(errorText);
