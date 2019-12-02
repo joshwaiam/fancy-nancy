@@ -67,7 +67,8 @@ const checkPrinterErrors = async (): Promise<void> => {
         "The cyan toner is low.",
         "The magenta toner is low.",
         "The yellow toner is low.",
-        "The black toner is low."
+        "The black toner is low.",
+        "The waste toner container is almost full."
       ];
 
       for (const node of nodes) {
