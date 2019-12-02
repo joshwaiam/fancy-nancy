@@ -42,15 +42,14 @@ bot.on("close", () => {
 });
 
 const checkPrinterErrors = async (): Promise<void> => {
-  logger.info("Checking for errors.");
-
   let page: puppeteer.Page;
-  let errors: string[] = [];
+  let errorsToReport: string[] = [];
+
+  logger.info("Checking for errors.");
 
   /** Fetch the dashboard HTML */
   try {
     page = await browser.newPage();
-
     await page.goto(url);
   } catch (e) {
     logger.error(e.message);
@@ -59,9 +58,9 @@ const checkPrinterErrors = async (): Promise<void> => {
 
   /** Parse the error DOM nodes */
   try {
-    errors = await page.evaluate(() => {
+    errorsToReport = await page.evaluate(() => {
       const nodes = document.getElementsByClassName("ErrorInfoMessage");
-      const errorMessages: string[] = [];
+      const parsedErrors: string[] = [];
 
       const errorsToIgnore = [
         "The cyan toner is low.",
@@ -74,11 +73,11 @@ const checkPrinterErrors = async (): Promise<void> => {
       for (const node of nodes) {
         const errorText = node.textContent.trim();
         if (!errorsToIgnore.includes(errorText)) {
-          errorMessages.push(errorText);
+          parsedErrors.push(errorText);
         }
       }
 
-      return errorMessages;
+      return parsedErrors;
     });
   } catch (e) {
     logger.error(e.message);
@@ -87,11 +86,11 @@ const checkPrinterErrors = async (): Promise<void> => {
 
   /** Format the message to send back */
   let message: string;
-  if (errors.length === 0) {
+  if (errorsToReport.length === 0) {
     message = ":success: Fancy Nancy is error free!";
   } else {
     message = ":warning: @channel\nFancy Nancy has the following errors:\n";
-    errors.map(e => {
+    errorsToReport.map(e => {
       message += `*${e}*\n`;
     });
   }
