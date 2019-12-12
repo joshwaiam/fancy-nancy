@@ -93,6 +93,9 @@ const checkPrinterErrors = async (): Promise<void> => {
     });
   }
 
+  /** Close the browser */
+  await browser.close();
+
   logger.info("Error check complete.");
 
   /** Exit if the error message is the same as the last check */
@@ -102,7 +105,4 @@ const checkPrinterErrors = async (): Promise<void> => {
 
   previousMessage = message;
   bot.postMessageToChannel(channel, message, messageParams);
-
-  /** Close the browser */
-  await browser.close();
 };
