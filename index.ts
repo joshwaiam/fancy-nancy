@@ -30,13 +30,18 @@ const checkPrinterErrors = async (): Promise<void> => {
   let page: puppeteer.Page;
   let errorsToReport: string[] = [];
 
+  function exitWithError(e: string) {
+    logger.error(e);
+    browser.close();
+  }
+
   logger.info("Checking for errors.");
 
   /** Initialize the browser */
   try {
     browser = await puppeteer.launch({ args: ["--disable-gpu"] });
   } catch (e) {
-    logger.error(e.message);
+    exitWithError(e.message);
     return;
   }
 
@@ -45,7 +50,7 @@ const checkPrinterErrors = async (): Promise<void> => {
     page = await browser.newPage();
     await page.goto(url);
   } catch (e) {
-    logger.error(e.message);
+    exitWithError(e.message);
     return;
   }
 
@@ -73,7 +78,7 @@ const checkPrinterErrors = async (): Promise<void> => {
       return parsedErrors;
     });
   } catch (e) {
-    logger.error(e.message);
+    exitWithError(e.message);
     return;
   }
 
