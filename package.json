@@ -7,8 +7,6 @@
     "build": "tsc --project ./tsconfig.json",
     "dev": "nodemon --config ./nodemon.json",
     "start": "node ./dist/index.js",
-    "install-windows-service": "winser -i",
-    "uninstall-windows-service": "winser -r",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,9 +23,7 @@
     "dotenv": "^8.2.0",
     "pino": "^5.13.5",
     "puppeteer": "^2.0.0",
-    "slackbots": "^1.2.0",
-    "winser": "^1.0.3",
-    "ws": "^7.2.0"
+    "slackbots": "^1.2.0"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
