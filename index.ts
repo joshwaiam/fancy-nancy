@@ -15,37 +15,30 @@ const interval = parseInt(process.env.CHECK_INTERVAL, 10) * 1000;
 const messageParams = { link_names: true };
 
 let previousMessage = "";
-let browser: puppeteer.Browser;
 
 const bot = new SlackBot({
   token,
   name
 });
 
-async function browserInit(): Promise<void> {
-  try {
-    browser = await puppeteer.launch({ args: ["--disable-gpu"] });
-  } catch (e) {
-    logger.error(e.message);
-  }
-
-  browser.on("disconnected", browserInit);
-}
-
 bot.on("start", async () => {
-  await browserInit();
   setInterval(checkPrinterErrors, interval);
 });
 
-bot.on("close", () => {
-  browser.close();
-});
-
 const checkPrinterErrors = async (): Promise<void> => {
+  let browser: puppeteer.Browser;
   let page: puppeteer.Page;
   let errorsToReport: string[] = [];
 
   logger.info("Checking for errors.");
+
+  /** Initialize the browser */
+  try {
+    browser = await puppeteer.launch({ args: ["--disable-gpu"] });
+  } catch (e) {
+    logger.error(e.message);
+    return;
+  }
 
   /** Fetch the dashboard HTML */
   try {
@@ -104,4 +97,7 @@ const checkPrinterErrors = async (): Promise<void> => {
 
   previousMessage = message;
   bot.postMessageToChannel(channel, message, messageParams);
+
+  /** Close the browser */
+  await browser.close();
 };
