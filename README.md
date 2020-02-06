@@ -1,4 +1,4 @@
-# Printer-Bot
+# Fanc-Nancy
 
 This tool will retrieve errors from the dashboard for a Canon iR-ADV C5255 printer and write them to a Slack channel.
 
