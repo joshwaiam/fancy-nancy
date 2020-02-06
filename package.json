@@ -1,7 +1,7 @@
 {
   "name": "fancy-nancy",
   "version": "1.0.0",
-  "description": "Monitors Fancy Nancy's status and reports it via Slack",
+  "description": "Monitors our office printer (fancy-nancy) and reports status errors to Slack",
   "main": "index.js",
   "scripts": {
     "build": "tsc --project ./tsconfig.json",
