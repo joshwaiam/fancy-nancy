@@ -20,7 +20,7 @@ This code has some specific implementation related to our local setup. However, 
 
 1. Follow the above steps in Getting Started.
 2. Run `npm run build`.
-3. Copy `fancy-nancy.service` to `etc/systemmd/system`.
+3. Copy `fancy-nancy.service` to `etc/systemd/system`.
 4. Ensure service is running with `systemctl status fancy-nancy.service`.  You can also `start`, `stop`, or `restart` in place of `status`.
 
 ## Credits
