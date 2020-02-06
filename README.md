@@ -16,12 +16,12 @@ This code has some specific implementation related to our local setup. However, 
 4. Complete the `.env` file with your specific information.
 5. Run `npm run dev` to start the bot in a development environment, or `npm run build` then `npm start` to run it in production.
 
-### Install as a Windows service
+### Install as a Linux service
 
 1. Follow the above steps in Getting Started.
 2. Run `npm run build`.
-3. Run `npm run install-windows-service`. This requires adminstrator access to terminal (run VSCode as administrator).
-4. You will have to go into Services and start it the first time, but it will now autostart when your computer does!
+3. Copy `fancy-nancy.service` to `etc/systemmd/system`.
+4. Ensure service is running with `systemctl status fancy-nancy.service`.  You can also `start`, `stop`, or `restart` in place of `status`.
 
 ## Credits
 
