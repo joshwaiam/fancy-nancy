@@ -1,7 +1,7 @@
 {
-  "name": "printer-bot",
+  "name": "fancy-nancy",
   "version": "1.0.0",
-  "description": "Monitors office printers' status and reports it via Slack",
+  "description": "Monitors Fancy Nancy's status and reports it via Slack",
   "main": "index.js",
   "scripts": {
     "build": "tsc --project ./tsconfig.json",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joshwaiam/printer-bot.git"
+    "url": "git+https://github.com/joshwaiam/fancy-nancy.git"
   },
   "author": "Josh Payette",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/joshwaiam/printer-bot/issues"
+    "url": "https://github.com/joshwaiam/fancy-nancy/issues"
   },
-  "homepage": "https://github.com/joshwaiam/printer-bot#readme",
+  "homepage": "https://github.com/joshwaiam/fancy-nancy#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
     "pino": "^5.13.5",
