@@ -2,16 +2,16 @@
 Description=Monitors Fancy Nancy printing status
 
 [Service]
-ExecStart=/usr/bin/nodejs /home/josh/Desktop/apps/printer-bot/dist/index.js
+ExecStart=/usr/bin/nodejs /home/josh/Desktop/apps/fancy-nancy/dist/index.js
 # Required on some systems
-#WorkingDirectory=/home/josh/Desktop/apps/printer-bot/dist
+#WorkingDirectory=/home/josh/Desktop/apps/fancy-nancy/dist
 Restart=always
 # Restart service after 10 seconds if node service crashes
 RestartSec=10
 # Output to syslog
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=printer-bot
+SyslogIdentifier=fancy-nancy
 Environment=NODE_ENV=production PORT=1337
 User=josh
 
