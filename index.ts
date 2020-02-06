@@ -30,7 +30,7 @@ const checkPrinterErrors = async (): Promise<void> => {
   let page: puppeteer.Page;
   let errorsToReport: string[] = [];
 
-  function exitWithError(e: string) {
+  function exitWithError(e: string): void {
     logger.error(e);
     browser.close();
   }
