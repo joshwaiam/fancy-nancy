@@ -22,6 +22,7 @@ This code has some specific implementation related to our local setup. However, 
 2. Run `npm run build`.
 3. Copy `fancy-nancy.service` to `etc/systemd/system` - `sudo cp ~/Desktop/apps/fancy-nancy/fancy-nancy.service /etc/systemd/system/fancy-nancy.service`
 4. Ensure service is running with `systemctl status fancy-nancy.service`.  You can also `start`, `stop`, or `restart` in place of `status`.
+5. Ensure service runs at startup with `systemctl enable fancy-nancy.server`.
 
 ## Credits
 
