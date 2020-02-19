@@ -95,7 +95,7 @@ const checkPrinterErrors = async (): Promise<void> => {
   } else {
     slackMessage =
       ":warning: @channel\nFancy Nancy has the following errors:\n";
-    teamsMessage = "@Printer Status\nFancy Nancy has the following errors:\n";
+    teamsMessage = "Fancy Nancy has the following errors:\n";
     errorsToReport.map(e => {
       slackMessage += `*${e}*\n`;
       teamsMessage += `*${e}*\n`;
